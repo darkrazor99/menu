@@ -71,28 +71,26 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "Steak",
+    category: "dinner",
+    price: 39.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
 ];
 
 const sectionCenter = document.querySelector(".section-center");
-const filterBtns = document.querySelectorAll(".filter-btn");
-
+const btnContainer = document.querySelector(".btn-container");
 
 // load items
 window.addEventListener("DOMContentLoaded", () => {
   displayMenuItems(menu);
-});
-// filter items
-filterBtns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    const category = e.currentTarget.dataset.id
-    let filteredItems = menu;
-    if (category!== "all")
-      filteredItems = menu.filter((item)=>category===item.category);
-    displayMenuItems(filteredItems);
-  });
+  displayBtns();
 });
 
-
+// helper functions 
 function displayMenuItems(menuItems) {
   let displayMenu = menuItems.map((item) => {
 
@@ -109,4 +107,31 @@ function displayMenuItems(menuItems) {
   });
   displayMenu = displayMenu.join("");
   sectionCenter.innerHTML = displayMenu;
+}
+function displayBtns() {
+  // using reduce
+  // const catagories = menu.reduce((items, item) => {
+  //   if (!items.includes(item.category))
+  //     items.push(item.category);
+  //   return items
+  // }, ["all"]);
+  // without using reduce
+  const catagories = ["all"].concat(Array.from(new Set(menu.map((item) => item.category))));
+
+  const categoryBtns = catagories.map((catagory) => {
+    return `<button class="filter-btn" type="button" data-id="${catagory}">${catagory}</button>`;
+  }).join("");
+  btnContainer.innerHTML = categoryBtns;
+
+  const filterBtns = btnContainer.querySelectorAll(".filter-btn");
+  // filter items
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const category = e.currentTarget.dataset.id
+      let filteredItems = menu;
+      if (category !== "all")
+        filteredItems = menu.filter((item) => category === item.category);
+      displayMenuItems(filteredItems);
+    });
+  });
 }
