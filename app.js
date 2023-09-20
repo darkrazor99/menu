@@ -74,9 +74,22 @@ const menu = [
 ];
 
 const sectionCenter = document.querySelector(".section-center");
+const filterBtns = document.querySelectorAll(".filter-btn");
 
+
+// load items
 window.addEventListener("DOMContentLoaded", () => {
   displayMenuItems(menu);
+});
+// filter items
+filterBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const category = e.currentTarget.dataset.id
+    let filteredItems = menu;
+    if (category!== "all")
+      filteredItems = menu.filter((item)=>category===item.category);
+    displayMenuItems(filteredItems);
+  });
 });
 
 
@@ -88,7 +101,7 @@ function displayMenuItems(menuItems) {
               <div class="item-info">
               <header>
                <h4>${item.title}</h4>
-               <h4 class="price">${item.price}</h4>
+               <h4 class="price">$${item.price}</h4>
               </header>
               <p class="item-text">${item.desc}</p>
               </div>
